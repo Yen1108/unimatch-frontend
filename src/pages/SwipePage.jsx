@@ -2,6 +2,7 @@ import { useState } from "react";
 import TinderCard from "react-tinder-card";
 
 import user1 from "../assets/1.jpg";
+
 import user2 from "../assets/2.jpg";
 import user3 from "../assets/3.jpg";
 
