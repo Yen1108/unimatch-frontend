@@ -1,125 +1,113 @@
 import { useState } from "react";
-import TinderCard from "react-tinder-card";
+import { useNavigate } from "react-router-dom";
+//import 引用模組功能
 
-function SwipePage() {
+//重複呼叫的模組
+function LoginPage() {
 
-  // Mock Users
-  const [users, setUsers] = useState([
+  const navigate = useNavigate();
 
-    {
-      id: 1,
-      name: "Sarah Lim",
-      faculty: "Business",
-      year: "Year 2",
-      bio: "Coffee lover and cafe hopper ☕",
-      interests: "Cafe, Music, Travel"
-    },
+  // Email State
+  const [email, setEmail] = useState("");
 
-    {
-      id: 2,
-      name: "Daniel Tan",
-      faculty: "Engineering",
-      year: "Year 3",
-      bio: "Gym and coding everyday 💪",
-      interests: "Gym, Coding, Anime"
-    },
+  // Password State
+  const [password, setPassword] = useState("");
 
-    {
-      id: 3,
-      name: "Emily Ong",
-      faculty: "Law",
-      year: "Year 1",
-      bio: "Looking for new friends at NUS!",
-      interests: "Reading, Movies, Food"
+  // Error Message
+  const [error, setError] = useState("");
+
+  // Login Button
+  const handleLogin = () => {
+
+    setError("");
+
+    // NUS Email Check
+    if (!email.endsWith("@u.nus.edu")) {
+
+      setError("Please use your NUS student email");
+
+      return;
     }
-  ]);
 
-  // Swipe Action
-  const onSwipe = (direction, user) => {
+    // Password Check
+    if (password.trim() === "") {
 
-    if (direction === "right") {
+      setError("Password is required");
 
-      console.log("LIKE:", user.name);
-
-    } else if (direction === "left") {
-
-      console.log("PASS:", user.name);
+      return;
     }
-  };
 
-  // Card Left Screen
-  const onCardLeftScreen = (id) => {
+    // Success
+// Mock Login Account
+const testEmail = "test@u.nus.edu";
 
-    setUsers((prev) =>
-      prev.filter((user) => user.id !== id)
-    );
+const testPassword = "123456";
+
+// Check Account
+if (email !== testEmail || password !== testPassword) {
+
+  setError("Invalid email or password");
+
+  return;
+}
+
+console.log("Login Success");
+
+// Save Login State
+localStorage.setItem("isLogin", "true");
+
+// Jump
+navigate("/profile");
   };
 
   return (
 
     <div style={styles.container}>
 
-      <h1 style={styles.title}>
-        UniMatch Discover
-      </h1>
+      <div style={styles.card}>
 
-      <div style={styles.cardContainer}>
+        <h1 style={styles.title}>
+          UniMatch
+        </h1>
 
+        <p style={styles.subtitle}>
+          NUS Student Login
+        </p>
+
+        {/* Email */}
+        <input
+          type="email"
+          placeholder="NUS Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
+
+        {/* Password */}
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
+        />
+
+        {/* Error */}
         {
-          users.map((user) => (
-
-            <TinderCard
-              key={user.id}
-              preventSwipe={["up", "down"]}
-              onSwipe={(dir) => onSwipe(dir, user)}
-              onCardLeftScreen={() => onCardLeftScreen(user.id)}
-            >
-
-              <div style={styles.card}>
-
-                {/* Avatar */}
-                <div style={styles.avatar}>
-                  {user.name.charAt(0)}
-                </div>
-
-                <h2>
-                  {user.name}
-                </h2>
-
-                <p>
-                  {user.faculty}
-                </p>
-
-                <p>
-                  {user.year}
-                </p>
-
-                <p style={styles.bio}>
-                  {user.bio}
-                </p>
-
-                <p style={styles.interests}>
-                  {user.interests}
-                </p>
-
-                {/* Hint */}
-                <div style={styles.hint}>
-
-                  <span>
-                    ← PASS
-                  </span>
-
-                  <span>
-                    LIKE →
-                  </span>
-
-                </div>
-
-              </div>
-
-            </TinderCard>
-          ))
+          error && (
+            <p style={styles.error}>
+              {error}
+            </p>
+          )
         }
+
+        {/* Login Button */}
+        <button
+          onClick={handleLogin}
+          style={styles.button}
+        >
+          Login
+        </button>
 
       </div>
 
@@ -130,67 +118,56 @@ function SwipePage() {
 const styles = {
 
   container: {
-    minHeight: "100vh",
-    backgroundColor: "#f5f5f5",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: "40px"
-  },
-
-  title: {
-    marginBottom: "30px"
-  },
-
-  cardContainer: {
-    position: "relative",
-    width: "400px",
-    height: "600px"
-  },
-
-  card: {
-    position: "absolute",
-    width: "100%",
-    maxWidth: "400px",
-    height: "550px",
-    backgroundColor: "white",
-    borderRadius: "20px",
-    padding: "40px",
-    boxShadow: "0 0 20px rgba(0,0,0,0.15)",
-    textAlign: "center",
-    userSelect: "none"
-  },
-
-  avatar: {
-    width: "120px",
-    height: "120px",
-    borderRadius: "50%",
-    backgroundColor: "#ff4d6d",
-    color: "white",
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "42px",
-    margin: "0 auto 20px auto"
+    backgroundColor: "#f5f5f5"
   },
 
-  bio: {
-    marginTop: "20px",
-    color: "#555"
+  card: {
+    width: "350px",
+    backgroundColor: "white",
+    padding: "40px",
+    borderRadius: "12px",
+    boxShadow: "0 0 20px rgba(0,0,0,0.1)"
   },
 
-  interests: {
-    marginTop: "15px",
-    color: "#888"
+  title: {
+    textAlign: "center",
+    marginBottom: "10px"
   },
 
-  hint: {
-    marginTop: "40px",
-    display: "flex",
-    justifyContent: "space-between",
-    color: "#999",
-    fontWeight: "bold"
+  subtitle: {
+    textAlign: "center",
+    marginBottom: "30px",
+    color: "#666"
+  },
+
+  input: {
+    width: "100%",
+    padding: "12px",
+    marginBottom: "15px",
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    boxSizing: "border-box"
+  },
+
+  button: {
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#ff4d6d",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "16px"
+  },
+
+  error: {
+    color: "red",
+    marginBottom: "15px"
   }
 };
 
-export default SwipePage;
+export default LoginPage;

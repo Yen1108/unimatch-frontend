@@ -1,19 +1,27 @@
 import { useState } from "react";
 import TinderCard from "react-tinder-card";
 
+import user1 from "../assets/1.jpg";
+import user2 from "../assets/2.jpg";
+import user3 from "../assets/3.jpg";
+
 function SwipePage() {
 
-  // Mock Users
-  const [users, setUsers] = useState([
+const [showMatch, setShowMatch] = useState(false);
 
+  const [matchedUser, setMatchedUser] = useState("");
+
+const [users, setUsers] = useState([
     {
       id: 1,
       name: "Sarah Lim",
       faculty: "Business",
       year: "Year 2",
       bio: "Coffee lover and cafe hopper ☕",
-      interests: "Cafe, Music, Travel"
+      interests: "Cafe, Music, Travel",
+      photo: user1
     },
+
 
     {
       id: 2,
@@ -21,8 +29,11 @@ function SwipePage() {
       faculty: "Engineering",
       year: "Year 3",
       bio: "Gym and coding everyday 💪",
-      interests: "Gym, Coding, Anime"
+      interests: "Gym, Coding, Anime",
+      photo: user2
     },
+
+
 
     {
       id: 3,
@@ -30,99 +41,105 @@ function SwipePage() {
       faculty: "Law",
       year: "Year 1",
       bio: "Looking for new friends at NUS!",
-      interests: "Reading, Movies, Food"
+      interests: "Reading, Movies, Food",
+      photo: user3
     }
   ]);
 
-  // Swipe Action
   const onSwipe = (direction, user) => {
 
     if (direction === "right") {
 
       console.log("LIKE:", user.name);
 
+      setMatchedUser(user.name);
+
+      setShowMatch(true);
+
+      setTimeout(() => {
+        setShowMatch(false);
+      }, 2200);
+
     } else if (direction === "left") {
 
       console.log("PASS:", user.name);
+
     }
   };
 
-  // Card Left Screen
   const onCardLeftScreen = (id) => {
-
-    setUsers((prev) =>
-      prev.filter((user) => user.id !== id)
-    );
+    setUsers((prev) => prev.filter((user) => user.id !== id));
   };
 
   return (
-
     <div style={styles.container}>
 
-      <h1 style={styles.title}>
-        UniMatch Discover
-      </h1>
+      <h1 style={styles.title}>UniMatch Discover</h1>
+
+  
+  {showMatch && (
+    <div style={styles.matchOverlay}>
+
+      <div style={styles.matchBox}>
+        <h1 style={styles.matchTitle}>
+          🎉 It's a Match!
+        </h1>
+
+        <p style={styles.matchText}>
+          You matched with {matchedUser}
+        </p>
+      </div>
+
+    </div>
+  )}
 
       <div style={styles.cardContainer}>
 
-        {
-          users.map((user) => (
+        {users.map((user) => (
 
-            <TinderCard
-              key={user.id}
-              preventSwipe={["up", "down"]}
-              onSwipe={(dir) => onSwipe(dir, user)}
-              onCardLeftScreen={() => onCardLeftScreen(user.id)}
-            >
+          <TinderCard
+            key={user.id}
+            preventSwipe={["up", "down"]}
+            onSwipe={(dir) => onSwipe(dir, user)}
+            onCardLeftScreen={() => onCardLeftScreen(user.id)}
+          >
 
-              <div style={styles.card}>
+            <div style={styles.card}>
 
-                {/* Avatar */}
-                <div style={styles.avatar}>
-                  {user.name.charAt(0)}
-                </div>
+              <img
+                src={user.photo}
+                alt={user.name}
+                style={styles.photo}
+              />
 
-                <h2>
-                  {user.name}
-                </h2>
+              <h2>{user.name}</h2>
 
-                <p>
-                  {user.faculty}
-                </p>
+              <p>{user.faculty}</p>
 
-                <p>
-                  {user.year}
-                </p>
+              <p>{user.year}</p>
 
-                <p style={styles.bio}>
-                  {user.bio}
-                </p>
+              <p style={styles.bio}>{user.bio}</p>
 
-                <p style={styles.interests}>
-                  {user.interests}
-                </p>
+              <p style={styles.interests}>
+                {user.interests}
+              </p>
 
-                {/* Hint */}
-                <div style={styles.hint}>
-
-                  <span>
-                    ← PASS
-                  </span>
-
-                  <span>
-                    LIKE →
-                  </span>
-
-                </div>
-
+              <div style={styles.hint}>
+                <span>← PASS</span>
+                <span>LIKE →</span>
               </div>
 
-            </TinderCard>
-          ))
-        }
+            </div>
+
+          </TinderCard>
+
+        ))}
+
+        {users.length === 0 && (
+          <h2>No More Profiles</h2>
+        )}
 
       </div>
-
     </div>
   );
 }
@@ -145,33 +162,29 @@ const styles = {
   cardContainer: {
     position: "relative",
     width: "400px",
-    height: "600px"
+    height: "650px"
   },
 
   card: {
     position: "absolute",
     width: "100%",
     maxWidth: "400px",
-    height: "550px",
+    height: "600px",
     backgroundColor: "white",
     borderRadius: "20px",
-    padding: "40px",
+    padding: "25px",
     boxShadow: "0 0 20px rgba(0,0,0,0.15)",
     textAlign: "center",
-    userSelect: "none"
+    userSelect: "none",
+    boxSizing: "border-box"
   },
 
-  avatar: {
-    width: "120px",
-    height: "120px",
-    borderRadius: "50%",
-    backgroundColor: "#ff4d6d",
-    color: "white",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "42px",
-    margin: "0 auto 20px auto"
+  photo: {
+    width: "100%",
+    height: "260px",
+    objectFit: "cover",
+    borderRadius: "16px",
+    marginBottom: "20px"
   },
 
   bio: {
@@ -185,12 +198,47 @@ const styles = {
   },
 
   hint: {
-    marginTop: "40px",
+    marginTop: "35px",
     display: "flex",
     justifyContent: "space-between",
     color: "#999",
     fontWeight: "bold"
-  }
+  },
+
+
+
+matchOverlay: {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: "rgba(0,0,0,0.55)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 999
+},
+
+matchBox: {
+  backgroundColor: "white",
+  padding: "40px",
+  borderRadius: "24px",
+  textAlign: "center",
+  boxShadow: "0 0 30px rgba(0,0,0,0.25)",
+  animation: "pop 0.4s ease"
+},
+
+matchTitle: {
+  fontSize: "42px",
+  color: "#ff4d6d",
+  marginBottom: "10px"
+},
+
+matchText: {
+  fontSize: "20px",
+  color: "#444"
+}
 };
 
 export default SwipePage;

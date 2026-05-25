@@ -1,28 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import currentUser from "../data/currentUser";
 
 function ProfilePage() {
 
     const navigate = useNavigate();
 
-  // Edit Mode
+ 
   const [isEditing, setIsEditing] = useState(false);
 
-  // Profile Data
-  const [profile, setProfile] = useState({
 
-    displayName: "John Tan",
+const [profile, setProfile] = useState(currentUser);
 
-    faculty: "School of Computing",
 
-    year: "Year 1",
-
-    bio: "I enjoy coding, coffee, and meeting new people at NUS.",
-
-    interests: "Coding, Music, Gym, Anime"
-  });
-
-  // Handle Input Change
   const handleChange = (e) => {
 
     const { name, value } = e.target;
@@ -33,17 +23,25 @@ function ProfilePage() {
     });
   };
 
-  // Save Profile
-  const handleSave = () => {
 
-    console.log("Profile Saved");
+const handleSave = () => {
 
-    console.log(profile);
+  console.log("Profile Saved");
 
-    setIsEditing(false);
+  console.log(profile);
 
-      navigate("/swipe");
-  };
+  setIsEditing(false);
+
+    navigate("/swipe");
+};
+
+
+  const handleLogout = () => {
+
+  localStorage.removeItem("isLogin");
+
+  navigate("/");
+};
 
   return (
 
@@ -54,9 +52,11 @@ function ProfilePage() {
         {/* Avatar */}
         <div style={styles.avatarSection}>
 
-          <div style={styles.avatar}>
-            JT
-          </div>
+        <img
+          src={profile.avatar}
+          alt="avatar"
+          style={styles.avatar}
+        />
 
           <button style={styles.uploadButton}>
             Upload Photo
@@ -149,18 +149,31 @@ function ProfilePage() {
           }
         </button>
 
-        {/* Save Button */}
-        {
-          isEditing && (
-            <button
-              style={styles.saveButton}
-              onClick={handleSave}
-            >
-              Save Profile & Start Discovering
-            </button>
-          )
-        }
+        {/* Start Discovering Button */}
+<button
+  style={styles.discoverButton}
+  onClick={() => navigate("/swipe")}
+>
+  Start Discovering
+</button>
 
+    {/* Save Button */}
+    {
+      isEditing && (
+        <button
+          style={styles.saveButton}
+          onClick={handleSave}
+        >
+          Save Profile & Start Discovering
+        </button>
+      )
+    }
+<button
+  style={styles.logoutButton}
+  onClick={handleLogout}
+>
+  Logout
+</button>
       </div>
 
     </div>
@@ -178,6 +191,9 @@ const styles = {
     padding: "40px"
   },
 
+
+
+
   card: {
     width: "450px",
     backgroundColor: "white",
@@ -186,10 +202,13 @@ const styles = {
     boxShadow: "0 0 20px rgba(0,0,0,0.1)"
   },
 
+
+
   avatarSection: {
     textAlign: "center",
     marginBottom: "30px"
   },
+
 
   avatar: {
     width: "100px",
@@ -204,6 +223,8 @@ const styles = {
     margin: "0 auto 15px auto"
   },
 
+
+
   uploadButton: {
     padding: "8px 16px",
     border: "none",
@@ -212,16 +233,22 @@ const styles = {
     cursor: "pointer"
   },
 
+
+
   title: {
     textAlign: "center",
     marginBottom: "30px"
   },
+
+
 
   label: {
     display: "block",
     marginBottom: "8px",
     fontWeight: "bold"
   },
+
+
 
   input: {
     width: "100%",
@@ -243,6 +270,8 @@ const styles = {
     boxSizing: "border-box"
   },
 
+
+
   editButton: {
     width: "100%",
     padding: "12px",
@@ -255,6 +284,9 @@ const styles = {
     fontSize: "16px"
   },
 
+
+
+
   saveButton: {
     width: "100%",
     padding: "14px",
@@ -264,7 +296,41 @@ const styles = {
     borderRadius: "8px",
     fontSize: "16px",
     cursor: "pointer"
-  }
+  },
+
+
+
+
+
+  logoutButton: {
+  width: "100%",
+  padding: "12px",
+  marginTop: "15px",
+  backgroundColor: "#ffffff",
+  color: "#ff4d6d",
+  border: "2px solid #ff4d6d",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontSize: "16px",
+  fontWeight: "bold",
+  transition: "0.2s"
+},
+
+
+
+discoverButton: {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "15px",
+  backgroundColor: "#ff4d6d",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontSize: "16px",
+  fontWeight: "bold"
+},
+
 };
 
 export default ProfilePage;
