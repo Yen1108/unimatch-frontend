@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import currentUser from "../data/currentUser";
-
 import ProfileAvatar from "../components/modules/profile/ProfileAvatar";
 import ProfileForm from "../components/modules/profile/ProfileForm";
 import ProfileButtons from "../components/modules/profile/ProfileButtons";
@@ -21,7 +19,12 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
 
   // Profile State
-  const [profile, setProfile] = useState(currentUser);
+  const [profile, setProfile] = useState(
+
+  JSON.parse(localStorage.getItem("profile")) ||
+
+  currentUser
+);
 
   // Input Change
   const handleChange = (e) => {
@@ -56,19 +59,29 @@ function ProfilePage() {
 };
 
   // Save Button
-  const handleSave = () => {
+const handleSave = () => {
 
-    console.log(profile);
+  console.log(profile);
 
-    setIsEditing(false);
+  // 存入 localStorage
+  localStorage.setItem(
+    "profile",
+    JSON.stringify(profile)
+  );
 
-    navigate("/swipe");
-  };
+  setIsEditing(false);
+
+  navigate("/swipe");
+};
 
   // Logout Button
   const handleLogout = () => {
 
     localStorage.removeItem("isLogin");
+
+localStorage.removeItem("profile");
+
+localStorage.removeItem("avatar");
 
     navigate("/");
   };
