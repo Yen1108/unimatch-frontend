@@ -11,10 +11,19 @@ function ProfilePage() {
 
   const navigate = useNavigate();
 
+  // Avatar State
+  const [avatar, setAvatar] = useState(
+    localStorage.getItem("avatar") ||
+    currentUser.avatar
+  );
+
+  // Edit Mode
   const [isEditing, setIsEditing] = useState(false);
 
+  // Profile State
   const [profile, setProfile] = useState(currentUser);
 
+  // Input Change
   const handleChange = (e) => {
 
     const { name, value } = e.target;
@@ -25,6 +34,28 @@ function ProfilePage() {
     });
   };
 
+  // Avatar Upload
+  const handleAvatarUpload = (e) => {
+
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+
+    const base64String = reader.result;
+
+    setAvatar(base64String);
+
+    localStorage.setItem("avatar", base64String);
+  };
+
+  reader.readAsDataURL(file);
+};
+
+  // Save Button
   const handleSave = () => {
 
     console.log(profile);
@@ -34,6 +65,7 @@ function ProfilePage() {
     navigate("/swipe");
   };
 
+  // Logout Button
   const handleLogout = () => {
 
     localStorage.removeItem("isLogin");
@@ -46,7 +78,8 @@ function ProfilePage() {
     <div>
 
       <ProfileAvatar
-        avatar={profile.avatar}
+        avatar={avatar}
+        onUpload={handleAvatarUpload}
       />
 
       <ProfileForm

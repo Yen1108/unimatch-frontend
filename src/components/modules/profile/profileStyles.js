@@ -6,116 +6,139 @@ export const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "40px"
+    padding: "20px"
   },
 
   card: {
-    width: "450px",
+    width: "300px",
     backgroundColor: "white",
-    borderRadius: "16px",
-    padding: "40px",
-    boxShadow: "0 0 20px rgba(0,0,0,0.1)"
+    borderRadius: "22px",
+    padding: "20px",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.08)"
   },
 
   avatarSection: {
-    textAlign: "center",
-    marginBottom: "30px"
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "18px"
+  },
+
+  avatarWrapper: {
+    position: "relative",
+    width: "52px",
+    height: "52px",
+    margin: "0 auto 10px"
   },
 
   avatar: {
-    width: "100px",
-    height: "100px",
+    width: "100%",
+    height: "100%",
     borderRadius: "50%",
     objectFit: "cover",
-    marginBottom: "15px"
+    border: "2px solid white",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.12)",
+    cursor: "pointer"
   },
 
-  uploadButton: {
-    padding: "8px 16px",
-    border: "none",
-    backgroundColor: "#eee",
-    borderRadius: "6px",
+  fileInput: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    opacity: 0,
     cursor: "pointer"
   },
 
   title: {
     textAlign: "center",
-    marginBottom: "30px"
+    marginBottom: "18px",
+    fontSize: "20px",
+    fontWeight: "700",
+    color: "#333"
   },
 
   label: {
     display: "block",
-    marginBottom: "8px",
-    fontWeight: "bold"
+    marginBottom: "6px",
+    fontWeight: "600",
+    color: "#555",
+    fontSize: "12px"
   },
 
   input: {
     width: "100%",
-    padding: "12px",
-    marginBottom: "20px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    boxSizing: "border-box"
+    padding: "10px 12px",
+    marginBottom: "12px",
+    borderRadius: "10px",
+    border: "1px solid #e2e2e2",
+    boxSizing: "border-box",
+    fontSize: "13px",
+    outline: "none"
   },
 
   textarea: {
     width: "100%",
-    padding: "12px",
-    marginBottom: "20px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    minHeight: "80px",
+    padding: "10px 12px",
+    marginBottom: "14px",
+    borderRadius: "10px",
+    border: "1px solid #e2e2e2",
+    minHeight: "70px",
     resize: "none",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    fontSize: "13px",
+    outline: "none"
   },
 
   editButton: {
     width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
+    padding: "11px",
+    marginBottom: "10px",
     backgroundColor: "#444",
     color: "white",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "16px"
+    fontSize: "13px",
+    fontWeight: "600"
   },
 
   discoverButton: {
     width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
+    padding: "11px",
+    marginBottom: "10px",
     backgroundColor: "#ff4d6d",
     color: "white",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "bold"
+    fontSize: "13px",
+    fontWeight: "600"
   },
 
   saveButton: {
     width: "100%",
-    padding: "14px",
+    padding: "11px",
     backgroundColor: "#ff4d6d",
     color: "white",
     border: "none",
-    borderRadius: "8px",
-    fontSize: "16px",
+    borderRadius: "10px",
+    fontSize: "13px",
+    fontWeight: "600",
     cursor: "pointer"
   },
 
   logoutButton: {
     width: "100%",
-    padding: "12px",
-    marginTop: "15px",
-    backgroundColor: "#ffffff",
+    padding: "11px",
+    marginTop: "10px",
+    backgroundColor: "#fff",
     color: "#ff4d6d",
-    border: "2px solid #ff4d6d",
-    borderRadius: "8px",
+    border: "1.5px solid #ff4d6d",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "bold"
+    fontSize: "13px",
+    fontWeight: "600"
   }
 
 };
