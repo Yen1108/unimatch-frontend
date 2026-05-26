@@ -7,10 +7,28 @@ import user2 from "../assets/2.jpg";
 import user3 from "../assets/3.jpg";
 
 function SwipePage() {
+  
+  const [lastRemoved, setLastRemoved] = useState(null);
+
+const [showSuperLike, setShowSuperLike] = useState(false);
 
 const [showMatch, setShowMatch] = useState(false);
 
   const [matchedUser, setMatchedUser] = useState("");
+
+  const [filter, setFilter] = useState("All");
+
+const handleUndo = () => {
+
+  if (lastRemoved) {
+
+    setUsers((prev) => [
+      lastRemoved,
+      ...prev
+    ]);
+
+  }
+};
 
 const [users, setUsers] = useState([
     {
@@ -61,19 +79,66 @@ const [users, setUsers] = useState([
         setShowMatch(false);
       }, 2200);
 
-    } else if (direction === "left") {
+    } 
+    
+    else if (direction === "left") {
 
       console.log("PASS:", user.name);
 
     }
+
+    else if (direction === "up") {
+
+  setShowSuperLike(true);
+
+setTimeout(() => {
+
+  setShowSuperLike(false);
+
+}, 1500);
+
+}
+
   };
 
   const onCardLeftScreen = (id) => {
+
+  const removedUser = users.find(
+    (user) => user.id === id
+  );
+
+  setLastRemoved(removedUser);
+
+
     setUsers((prev) => prev.filter((user) => user.id !== id));
   };
 
   return (
+
+
+
+
+    
     <div style={styles.container}>
+          <select
+      value={filter}
+      onChange={(e) => setFilter(e.target.value)}
+      style={styles.filter}
+    >
+      <option>All</option>
+      <option>Business</option>
+      <option>Engineering</option>
+      <option>Law</option>
+    </select>
+
+    {
+      showSuperLike && (
+        <div style={styles.superLikeEffect}>
+          ★ SUPER LIKE ★
+        </div>
+      )
+    }
+
 
       <h1 style={styles.title}>UniMatch Discover</h1>
 
@@ -96,11 +161,19 @@ const [users, setUsers] = useState([
 
       <div style={styles.cardContainer}>
 
-        {users.map((user) => (
+  {users
+    .filter((user) => {
+
+      if (filter === "All") return true;
+
+      return user.faculty === filter;
+
+    })
+    .map((user) => (
 
           <TinderCard
             key={user.id}
-            preventSwipe={["up", "down"]}
+            preventSwipe={["down"]}
             onSwipe={(dir) => onSwipe(dir, user)}
             onCardLeftScreen={() => onCardLeftScreen(user.id)}
           >
@@ -127,6 +200,7 @@ const [users, setUsers] = useState([
 
               <div style={styles.hint}>
                 <span>← PASS</span>
+                
                 <span>LIKE →</span>
               </div>
 
@@ -141,11 +215,47 @@ const [users, setUsers] = useState([
         )}
 
       </div>
+
+      <button
+  onClick={handleUndo}
+  style={styles.undoButton}
+>
+  Undo
+</button>
     </div>
   );
 }
 
 const styles = {
+
+  superLikeEffect: {
+
+  position: "fixed",
+
+  top: "50%",
+
+  left: "50%",
+
+  transform: "translate(-50%, -50%) scale(1)",
+
+  backgroundColor: "#FFD700",
+
+  color: "#fff",
+
+  padding: "20px 40px",
+
+  borderRadius: "20px",
+
+  fontSize: "32px",
+
+  fontWeight: "bold",
+
+  zIndex: 9999,
+
+  boxShadow: "0 0 40px rgba(255,215,0,0.9)",
+
+  animation: "superLikePop 1.5s ease"
+},
 
   container: {
     minHeight: "100vh",
@@ -239,7 +349,29 @@ matchTitle: {
 matchText: {
   fontSize: "20px",
   color: "#444"
-}
+},
+
+
+undoButton: {
+  marginTop: "30px",
+  padding: "12px 24px",
+  border: "none",
+  borderRadius: "10px",
+  backgroundColor: "#444",
+  color: "white",
+  cursor: "pointer",
+  fontSize: "16px",
+  zIndex: 9999
+},
+  filter: {
+    width: "220px",
+    padding: "12px",
+    borderRadius: "12px",
+    border: "1px solid #ccc",
+    marginBottom: "25px",
+    fontSize: "16px",
+    outline: "none"
+  },
 };
 
 export default SwipePage;
